@@ -1,0 +1,10 @@
+
+- name: Deploy Docker-based application
+  hosts: servers
+  become: yes
+  become_user: root
+  gather_facts: yes
+  roles:
+    - server-setup
+    - copy-files
+    - deploy-app

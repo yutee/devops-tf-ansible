@@ -1,0 +1,40 @@
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install dependencies
+  apt:
+    name: 
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+
+- name: Add Docker GPG key
+  ansible.builtin.shell: |
+    curl -fsSL {{ docker_repo_url }}/gpg | gpg --dearmor -o {{ docker_repo_gpg_key }}
+  args:
+    creates: "{{ docker_repo_gpg_key }}"
+
+- name: Add Docker repository
+  ansible.builtin.shell: |
+    echo "deb [arch=amd64 signed-by={{ docker_repo_gpg_key }}] {{ docker_repo_url }} $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+  args:
+    creates: /etc/apt/sources.list.d/docker.list
+
+- name: Update apt cache for Docker
+  apt:
+    update_cache: yes
+
+- name: Install Docker and required packages
+  apt:
+    name: "{{ docker_packages }}"
+    state: latest
+
+- name: Add user to Docker group
+  ansible.builtin.shell: |
+    sudo groupadd docker || true
+    sudo usermod -aG docker {{ ansible_user }}

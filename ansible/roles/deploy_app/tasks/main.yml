@@ -1,0 +1,22 @@
+
+# - name: Create required monitoring data directories
+#   file:
+#     path: "/opt/app/monitoring/data/{{ item }}"
+#     state: directory
+#     owner: 10001
+#     group: 10001
+#     mode: '0777'
+#   with_items:
+#     - loki/chunks
+#     - loki/rules
+
+- name: Create acme.json file for Traefik
+  file:
+    path: /opt/app/acme.json
+    state: touch
+    mode: '0600'
+
+- name: Bring up the application stack
+  shell: docker-compose up -d
+  args:
+    chdir: /opt/app

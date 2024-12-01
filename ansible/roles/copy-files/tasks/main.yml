@@ -1,0 +1,72 @@
+
+- name: Create the base application directory
+  file:
+    path: "/opt/app"
+    state: directory
+    mode: "0755"
+
+- name: Copy docker-compose.yml
+  copy:
+    src: "../docker-compose.yml"
+    dest: "/opt/app/docker-compose.yml"
+    mode: "0644"
+
+- name: Copy traefik.yml
+  copy:
+    src: "../traefik.yml"
+    dest: "/opt/app/traefik.yml"
+    mode: "0644"
+
+- name: Copy environment file
+  copy:
+    src: "../.env"
+    dest: "/opt/app/.env"
+    mode: "0644"
+
+- name: Create the monitoring directory
+  file:
+    path: "/opt/app/monitoring"
+    state: directory
+    mode: "0755"
+
+- name: Create the monitoring data directory
+  file:
+    path: "/opt/app/monitoring/data"
+    state: directory
+    mode: "0777"
+
+- name: Copy monitoring docker-compose.yml
+  copy:
+    src: "../monitoring/docker-compose.yml"
+    dest: "/opt/app/monitoring/docker-compose.yml"
+    mode: "0644"
+
+- name: Copy prometheus.yml
+  copy:
+    src: "../monitoring/prometheus.yml"
+    dest: "/opt/app/monitoring/prometheus.yml"
+    mode: "0644"
+
+- name: Copy loki-config.yaml
+  copy:
+    src: "../monitoring/loki-config.yaml"
+    dest: "/opt/app/monitoring/loki-config.yaml"
+    mode: "0644"
+
+- name: Copy promtail-config.yml
+  copy:
+    src: "../monitoring/promtail-config.yaml"
+    dest: "/opt/app/monitoring/promtail-config.yaml"
+    mode: "0644"
+
+- name: Copy .env
+  copy:
+    src: "../monitoring/.env"
+    dest: "/opt/app/monitoring/.env"
+    mode: "0644"
+
+- name: Set permissions for /opt/app/monitoring/data
+  file:
+    path: "/opt/app/monitoring/data"
+    state: directory
+    mode: "0777"
