@@ -52,3 +52,34 @@ resource "null_resource" "ansible_provisioner" {
     EOT
   }
 }
+
+# dns record for the server
+# dns zone (slready created manually)
+data "azurerm_dns_zone" "domain" {
+  name                = var.domain_name
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_dns_a_record" "domain" {
+  name                = "@"
+  zone_name           = data.azurerm_dns_zone.domain.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 3600
+  records             = [module.vm.public_ip]
+}
+
+resource "azurerm_dns_a_record" "www_domain" {
+  name                = "www"
+  zone_name           = data.azurerm_dns_zone.domain.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 3600
+  records             = [module.vm.public_ip]
+}
+
+resource "azurerm_dns_a_record" "traefik_domain" {
+  name                = "traefik"
+  zone_name           = data.azurerm_dns_zone.domain.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 3600
+  records             = [module.vm.public_ip]
+}

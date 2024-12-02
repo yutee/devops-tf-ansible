@@ -73,7 +73,10 @@ Output:
 ```bash
 vm_public_ip: <ip-address>
 ```
+![terraform-apply-output](./00-images/terraform-apply.png)
+
 Copy the IP address to your DNS server and set up dns mapping.
+Alternatively, there is a configuration for doman name mapping in the `main.tf` file. Create an azure dns zone and all the domain name to your variables file for automatic creation of domain.
 
 __4. Application Deployment:__
 - Verify the application is running by accessing the configured IP or domain after mapping has been configured.

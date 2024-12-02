@@ -17,3 +17,8 @@ variable "ssh_key_path" {
   description = "The path to the SSH public key used to access the virtual machine."
   type        = string
 }
+
+variable "domain_name" {
+  description = "The name of the DNS zone to create for the virtual machine."
+  type        = string
+}

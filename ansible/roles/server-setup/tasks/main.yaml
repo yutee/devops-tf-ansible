@@ -34,6 +34,16 @@
     name: "{{ docker_packages }}"
     state: latest
 
+- name: Install Docker Compose binary
+  ansible.builtin.shell: |
+    curl -SL https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+  args:
+    creates: /usr/local/bin/docker-compose
+
+- name: Verify Docker Compose installation
+  ansible.builtin.shell: docker-compose --version
+
 - name: Add user to Docker group
   ansible.builtin.shell: |
     sudo groupadd docker || true
